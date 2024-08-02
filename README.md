@@ -1,6 +1,6 @@
 # TradingView Auto Snapshot Chart
 
-This project aims to automate the snapshot capture of charts from TradingView using a Python script and process the captured images using a React application.
+This project aims to automate the snapshot capture of charts from TradingView using a Python script.
 
 ## Ptyhon Script
 

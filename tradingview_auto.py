@@ -3,6 +3,12 @@ import time
 import winsound
 import os
 import shutil
+import threading
+import tkinter as tk
+from tkinter import ttk
+
+# Variabel untuk kontrol threading
+running = False
 
 def clear_directory(directory_path):
     if os.path.exists(directory_path):
@@ -41,15 +47,18 @@ def switch_to_next_coin():
     pyautogui.press('down')
     time.sleep(3)
 
-def main():
+def run_bot(num_coins):
+    global running
+    running = True
     image_directory = r"C:\Users\Novandra Anugrah\Desktop\Images"
     clear_directory(image_directory)
     open_tradingview()
 
     timeframes = ['4h', '15']
-    num_coins = 15
 
     for _ in range(num_coins):
+        if not running:
+            break  # Exit loop if stopped
         for timeframe in timeframes:
             set_timeframe(timeframe)
             take_chart_snapshot()
@@ -58,5 +67,30 @@ def main():
     winsound.Beep(1000, 500)
     winsound.Beep(1000, 500)
 
-if __name__ == '__main__':
-    main()
+def stop_bot():
+    global running
+    running = False  # Stop the bot
+
+def start_threaded_bot():
+    num_coins = int(num_coins_var.get())  # Get number of coins from GUI input
+    threading.Thread(target=run_bot, args=(num_coins,)).start()  # Run the bot in a separate thread
+
+# Setup GUI
+root = tk.Tk()
+root.title("TradingView Snapshot Automation")
+
+# Input field for num_coins
+num_coins_var = tk.StringVar(value='15')
+ttk.Label(root, text="Number of Coins:").grid(column=0, row=0, padx=10, pady=10)
+num_coins_entry = ttk.Entry(root, textvariable=num_coins_var)
+num_coins_entry.grid(column=1, row=0, padx=10, pady=10)
+
+# Run button
+run_button = ttk.Button(root, text="Run", command=start_threaded_bot)
+run_button.grid(column=0, row=1, padx=10, pady=20)
+
+# Stop button
+stop_button = ttk.Button(root, text="Stop", command=stop_bot)
+stop_button.grid(column=1, row=1, padx=10, pady=20)
+
+root.mainloop()

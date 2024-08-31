@@ -7,7 +7,7 @@ This is a personal Python application designed to automate the process of taking
 
 1. **Install TradingView App**
    - If you haven't TradingView App on your local computer you can download and install it first
-   - You can dowload it from [text](https://www.tradingview.com/desktop/)
+   - You can download here [Download TradingView](https://www.tradingview.com/desktop/)
    - Save your Stocks, Forex, Crypto chart on the watchlist
 
 2. **Run the Application:**

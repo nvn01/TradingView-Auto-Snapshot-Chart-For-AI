@@ -108,3 +108,14 @@ venv.bak/
 
 # Cython debug symbols
 cython_debug/
+
+
+# Ignore PyInstaller build files
+/build/
+/dist/
+*.spec
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo

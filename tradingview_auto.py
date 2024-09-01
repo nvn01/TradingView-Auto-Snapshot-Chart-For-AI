@@ -58,7 +58,20 @@ def run_bot(num_coins):
 
     open_tradingview()
 
-    timeframes = [tf.strip() for tf in timeframes_var.get().split(',')]
+    # Get selected timeframes
+    selected_timeframes = [timeframe_var_1.get(), timeframe_var_2.get()]
+
+    # Convert dropdown values to the appropriate format
+    timeframes = []
+    for tf in selected_timeframes:
+        if "minute" in tf:
+            timeframes.append(tf.split()[0])
+        elif "hour" in tf:
+            timeframes.append(tf.split()[0] + 'h')
+        elif "day" in tf:
+            timeframes.append(tf.split()[0] + 'd')
+        elif "month" in tf:
+            timeframes.append(tf.split()[0] + 'm')
 
     for _ in range(num_coins):
         if not running:
@@ -115,18 +128,35 @@ path_entry.grid(column=1, row=2, padx=10, pady=10)
 path_button = ttk.Button(root, text="Change", command=select_directory, state='disabled')
 path_button.grid(column=2, row=2, padx=10, pady=10)
 
-# Input field for custom timeframes
-timeframes_var = tk.StringVar(value='4h, 15')
-ttk.Label(root, text="Timeframes (comma separated):").grid(column=0, row=3, padx=10, pady=10)
-timeframes_entry = ttk.Entry(root, textvariable=timeframes_var)
-timeframes_entry.grid(column=1, row=3, padx=10, pady=10)
+# Timeframes selection
+ttk.Label(root, text="Timeframe 1:").grid(column=0, row=3, padx=10, pady=10)
+timeframe_var_1 = tk.StringVar()
+timeframe_combobox_1 = ttk.Combobox(root, textvariable=timeframe_var_1)
+timeframe_combobox_1['values'] = [
+    "1 minute", "3 minutes", "5 minutes", "15 minutes", "30 minutes", "45 minutes",
+    "1 hour", "2 hours", "3 hours", "4 hours",
+    "1 day", "1 week", "1 month", "3 months", "6 months", "12 months"
+]
+timeframe_combobox_1.grid(column=1, row=3, padx=10, pady=10)
+timeframe_combobox_1.current(9)  # Set default to "4 hours"
+
+ttk.Label(root, text="Timeframe 2:").grid(column=0, row=4, padx=10, pady=10)
+timeframe_var_2 = tk.StringVar()
+timeframe_combobox_2 = ttk.Combobox(root, textvariable=timeframe_var_2)
+timeframe_combobox_2['values'] = [
+    "1 minute", "3 minutes", "5 minutes", "15 minutes", "30 minutes", "45 minutes",
+    "1 hour", "2 hours", "3 hours", "4 hours",
+    "1 day", "1 week", "1 month", "3 months", "6 months", "12 months"
+]
+timeframe_combobox_2.grid(column=1, row=4, padx=10, pady=10)
+timeframe_combobox_2.current(3)  # Set default to "15 minutes"
 
 # Run button
 run_button = ttk.Button(root, text="Run", command=start_threaded_bot)
-run_button.grid(column=0, row=4, padx=10, pady=20)
+run_button.grid(column=0, row=5, padx=10, pady=20)
 
 # Stop button
 stop_button = ttk.Button(root, text="Stop", command=stop_bot)
-stop_button.grid(column=1, row=4, padx=10, pady=20)
+stop_button.grid(column=1, row=5, padx=10, pady=20)
 
 root.mainloop()

@@ -6,6 +6,7 @@ import shutil
 import threading
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
 
 # Variabel untuk kontrol threading
 running = False
@@ -50,8 +51,11 @@ def switch_to_next_coin():
 def run_bot(num_coins):
     global running
     running = True
-    image_directory = r"C:\Users\Novandra Anugrah\Desktop\Images"
-    clear_directory(image_directory)
+    image_directory = path_var.get()
+    
+    if clear_var.get():
+        clear_directory(image_directory)
+
     open_tradingview()
 
     timeframes = ['4h', '15']
@@ -75,6 +79,11 @@ def start_threaded_bot():
     num_coins = int(num_coins_var.get())  # Get number of coins from GUI input
     threading.Thread(target=run_bot, args=(num_coins,)).start()  # Run the bot in a separate thread
 
+def select_directory():
+    selected_directory = filedialog.askdirectory()
+    if selected_directory:
+        path_var.set(selected_directory)
+
 # Setup GUI
 root = tk.Tk()
 root.title("TradingView Snapshot Automation")
@@ -85,12 +94,25 @@ ttk.Label(root, text="Number of Coins:").grid(column=0, row=0, padx=10, pady=10)
 num_coins_entry = ttk.Entry(root, textvariable=num_coins_var)
 num_coins_entry.grid(column=1, row=0, padx=10, pady=10)
 
+# Checkbox for clear directory
+clear_var = tk.BooleanVar()
+clear_check = ttk.Checkbutton(root, text="Clear directory", variable=clear_var)
+clear_check.grid(column=0, row=1, padx=10, pady=10)
+
+# Path selection
+path_var = tk.StringVar(value=r"C:\Users\Novandra Anugrah\Desktop\Images")
+ttk.Label(root, text="Location:").grid(column=0, row=2, padx=10, pady=10)
+path_entry = ttk.Entry(root, textvariable=path_var, width=40)
+path_entry.grid(column=1, row=2, padx=10, pady=10)
+path_button = ttk.Button(root, text="Change", command=select_directory)
+path_button.grid(column=2, row=2, padx=10, pady=10)
+
 # Run button
 run_button = ttk.Button(root, text="Run", command=start_threaded_bot)
-run_button.grid(column=0, row=1, padx=10, pady=20)
+run_button.grid(column=0, row=3, padx=10, pady=20)
 
 # Stop button
 stop_button = ttk.Button(root, text="Stop", command=stop_bot)
-stop_button.grid(column=1, row=1, padx=10, pady=20)
+stop_button.grid(column=1, row=3, padx=10, pady=20)
 
 root.mainloop()

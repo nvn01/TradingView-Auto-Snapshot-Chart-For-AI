@@ -84,6 +84,14 @@ def select_directory():
     if selected_directory:
         path_var.set(selected_directory)
 
+def toggle_location_options():
+    if clear_var.get():
+        path_entry.config(state='normal')
+        path_button.config(state='normal')
+    else:
+        path_entry.config(state='disabled')
+        path_button.config(state='disabled')
+
 # Setup GUI
 root = tk.Tk()
 root.title("TradingView Snapshot Automation")
@@ -96,15 +104,15 @@ num_coins_entry.grid(column=1, row=0, padx=10, pady=10)
 
 # Checkbox for clear directory
 clear_var = tk.BooleanVar()
-clear_check = ttk.Checkbutton(root, text="Clear directory", variable=clear_var)
+clear_check = ttk.Checkbutton(root, text="Clear directory", variable=clear_var, command=toggle_location_options)
 clear_check.grid(column=0, row=1, padx=10, pady=10)
 
 # Path selection
 path_var = tk.StringVar(value=r"C:\Users\Novandra Anugrah\Desktop\Images")
 ttk.Label(root, text="Location:").grid(column=0, row=2, padx=10, pady=10)
-path_entry = ttk.Entry(root, textvariable=path_var, width=40)
+path_entry = ttk.Entry(root, textvariable=path_var, width=40, state='disabled')
 path_entry.grid(column=1, row=2, padx=10, pady=10)
-path_button = ttk.Button(root, text="Change", command=select_directory)
+path_button = ttk.Button(root, text="Change", command=select_directory, state='disabled')
 path_button.grid(column=2, row=2, padx=10, pady=10)
 
 # Run button

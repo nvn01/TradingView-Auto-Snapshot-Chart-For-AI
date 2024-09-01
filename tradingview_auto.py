@@ -33,7 +33,7 @@ def open_tradingview():
     pyautogui.write('TradingView')
     time.sleep(1)
     pyautogui.press('enter')
-    time.sleep(10)  # wait for the app to load
+    time.sleep(15)  # Adjusted wait time to 15 seconds
 
 def take_chart_snapshot():
     pyautogui.hotkey('ctrl', 'alt', 's')
@@ -58,7 +58,7 @@ def run_bot(num_coins):
 
     open_tradingview()
 
-    timeframes = ['4h', '15']
+    timeframes = [tf.strip() for tf in timeframes_var.get().split(',')]
 
     for _ in range(num_coins):
         if not running:
@@ -115,12 +115,18 @@ path_entry.grid(column=1, row=2, padx=10, pady=10)
 path_button = ttk.Button(root, text="Change", command=select_directory, state='disabled')
 path_button.grid(column=2, row=2, padx=10, pady=10)
 
+# Input field for custom timeframes
+timeframes_var = tk.StringVar(value='4h, 15')
+ttk.Label(root, text="Timeframes (comma separated):").grid(column=0, row=3, padx=10, pady=10)
+timeframes_entry = ttk.Entry(root, textvariable=timeframes_var)
+timeframes_entry.grid(column=1, row=3, padx=10, pady=10)
+
 # Run button
 run_button = ttk.Button(root, text="Run", command=start_threaded_bot)
-run_button.grid(column=0, row=3, padx=10, pady=20)
+run_button.grid(column=0, row=4, padx=10, pady=20)
 
 # Stop button
 stop_button = ttk.Button(root, text="Stop", command=stop_bot)
-stop_button.grid(column=1, row=3, padx=10, pady=20)
+stop_button.grid(column=1, row=4, padx=10, pady=20)
 
 root.mainloop()

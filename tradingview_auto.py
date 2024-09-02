@@ -108,6 +108,7 @@ def toggle_location_options():
 # Setup GUI
 root = tk.Tk()
 root.title("TradingView Snapshot Automation")
+root.iconbitmap("EXEC.ico")
 
 # Input field for num_coins
 num_coins_var = tk.StringVar(value='15')
